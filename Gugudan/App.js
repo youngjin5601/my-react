@@ -31,7 +31,7 @@ const App=()=>{
         <input type="number" ref={inputRef} value={value} onChange={inputChange}></input>
         <button>input</button>
       </form>
-  <div>{result}</div>
+      <div>{result}</div>
     </>
   )
 }
