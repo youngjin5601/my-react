@@ -1,5 +1,5 @@
 import React from 'react';
-//구구단
+
 const App=()=>{
   const [first, setFirst]=React.useState(Math.ceil(Math.random()*9))
   const [second, setSecond]=React.useState(Math.ceil(Math.random()*9))
@@ -26,12 +26,13 @@ const App=()=>{
   }
   return(
     <>
-      <div>{first} times {second} is what ?</div>
-      <form onSubmit={submitData}>
-        <input type="number" ref={inputRef} value={value} onChange={inputChange}></input>
-        <button>input</button>
-      </form>
-      <div>{result}</div>
+    <h1>GuGuDan</h1>
+    <div>{first} times {second} is what ?</div>
+    <form onSubmit={submitData}>
+      <input type="number" ref={inputRef} value={value} onChange={inputChange}></input>
+      <button>input</button>
+    </form>
+    <div>{result}</div>
     </>
   )
 }
