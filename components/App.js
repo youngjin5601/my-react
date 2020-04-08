@@ -11,7 +11,7 @@ const getNumbers=()=>{
 const App=()=>{
   const [answer, setAnswer]=React.useState()
   console.log(answer)
-  const [tryNo, setTryNo]=React.useState(1)
+  
   const [result,setResult]=React.useState('')
   const [tryList, setTryList]=React.useState([])
   const inputRef=React.useRef(null)
@@ -21,19 +21,27 @@ const App=()=>{
   },[])
   const submitForm=(e)=>{
     e.preventDefault()
-    setTryNo(tryNo+1)
     if(inputRef.current.value===answer.join('')){
       setTryList([...tryList, {ans: inputRef.current.value, strike: 4, ball: 0}])
       inputRef.current.value=''
       //inputRef.current.focus()
       setResult('home run!!!')
       setTimeout(()=>{
-        setTryNo(0)
         setAnswer(getNumbers)
         setResult('')
         setTryList([])
       },2000)
     }else{
+      console.log(tryList.length)
+      if(tryList.length>=4){
+        setResult('try again!!!')
+        setTimeout(()=>{
+          setAnswer(getNumbers)
+          setResult('')
+          setTryList([])
+        },2000)
+      }
+      //
       let strike=0;
       let ball=0;
       for(let i=0;i<answer.length;i++){
@@ -46,14 +54,6 @@ const App=()=>{
       setTryList([...tryList, {ans: inputRef.current.value, strike: strike, ball: ball}])
       inputRef.current.value=''
       //inputRef.current.focus()
-      if(tryNo>4){
-        setTimeout(()=>{
-          setTryNo(0)
-          setAnswer(getNumbers)
-          setResult('')
-          setTryList([])
-        },2000)
-      }
     }
   }
   return(<>
