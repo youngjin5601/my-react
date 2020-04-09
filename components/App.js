@@ -1,75 +1,47 @@
 import React from 'react'
-//import css from '../src/index.css'
+import css from './index.css'
 
-const getNumbers=()=>{
-  console.log('hello')
-  const candidates=[1,2,3,4,5,6,7,8,9]
-  const chosens=[]
-  for(let i=0;i<4;i++) chosens.push(candidates.splice(Math.floor(Math.random()*candidates.length),1)[0]);
-  return chosens
-}
 const App=()=>{
-  const [answer, setAnswer]=React.useState()
-  console.log(answer)
+  const [color, setColor]=React.useState('red')
+  const [message, setMessage]=React.useState('click to start')
+  const [lag, setLag]=React.useState([])
+  const id=React.useRef()
+  const start=React.useRef()
   
-  const [result,setResult]=React.useState('')
-  const [tryList, setTryList]=React.useState([])
-  const inputRef=React.useRef(null)
+  console.log(start)
+  const clickScreen=()=>{
+    switch(color){
+      case 'red':
+        id.current=setTimeout(() => {
+          setColor('blue')
+          setMessage('click now')
+          start.current=new Date()
+        }, 2000+Math.floor(Math.random()*1000));
 
-  React.useEffect(()=>{
-    setAnswer(getNumbers())
-  },[])
-  const submitForm=(e)=>{
-    e.preventDefault()
-    if(inputRef.current.value===answer.join('')){
-      setTryList([...tryList, {ans: inputRef.current.value, strike: 4, ball: 0}])
-      inputRef.current.value=''
-      //inputRef.current.focus()
-      setResult('home run!!!')
-      setTimeout(()=>{
-        setAnswer(getNumbers)
-        setResult('')
-        setTryList([])
-      },2000)
-    }else{
-      console.log(tryList.length)
-      if(tryList.length>=4){
-        setResult('try again!!!')
-        setTimeout(()=>{
-          setAnswer(getNumbers)
-          setResult('')
-          setTryList([])
-        },2000)
-      }
-      //
-      let strike=0;
-      let ball=0;
-      for(let i=0;i<answer.length;i++){
-        if(inputRef.current.value[i]==answer[i]){
-          strike++;
-        }else{
-          if(answer.includes(parseInt(inputRef.current.value[i]))) ball++
-        }
-      }
-      setTryList([...tryList, {ans: inputRef.current.value, strike: strike, ball: ball}])
-      inputRef.current.value=''
-      //inputRef.current.focus()
+        setColor('green')
+        setMessage('wait for blue')
+        break;
+      case 'green':
+        setColor('red')
+        setMessage('you are in a hurry..')
+        clearTimeout(id.current)
+        break;
+      case 'blue':
+        setLag(lag=>[...lag, new Date()-start.current])
+        setColor('red')
+        setMessage('click to start')
+        break;
     }
   }
   return(<>
-    <h1>NumberBaseball</h1>
-    <h2>{result}</h2>
-    <form onSubmit={submitForm}>
-      <input ref={inputRef} type="text" maxLength="4" ></input>
-      <button type="submit">click!!</button>
-    </form>
-    <ul>
-      {
-        tryList.map((item,idx)=>{
-        return <li key={idx}>ans:{item.ans}- strike:{item.strike}- ball:{item.ball}</li>
-        })
-      }
-    </ul>
+    <h1>response check</h1>
+    <div id="screen" className={color} onClick={clickScreen}>
+      {message}
+    </div>
+    Records  {lag.length !==0 && lag.reduce((a,b)=>a+b)/lag.length} ms
+      <ul>
+        {lag.map((item,idx)=><li key={idx}>{item} ms</li>)}
+      </ul>
   </>)
 }
 export default App;
