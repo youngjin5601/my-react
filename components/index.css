@@ -1,14 +1,5 @@
-#screen{
-  width: 200px;
-  height: 200px;
-  color: white;
-}
-#screen.red{
-  background:red;
-}
-#screen.green{
-  background:green;
-}
-#screen.blue{
-  background:blue;
+#rps-img{
+  width: 220px;
+  height: 300px;
+  background-image: no-repeat url('../public/rps.jpg') 
 }
